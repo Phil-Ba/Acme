@@ -27,6 +27,7 @@
         <kotlin.code.style>official</kotlin.code.style>
         <kotlintest.version>3.4.2</kotlintest.version>
         <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
+        <java.version>11</java.version>
     </properties>
 
     <dependencies>
