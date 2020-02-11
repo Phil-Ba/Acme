@@ -110,8 +110,8 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <repository>philba/${artifactId}</repository>
-                        <tag>${version}</tag>
+                        <repository>philba/${project.artifactId}</repository>
+                        <tag>${project.version}</tag>
                     </configuration>
                 </plugin>
             </plugins>
