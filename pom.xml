@@ -19,7 +19,6 @@
     <modules>
         <module>acme-product-inventory</module>
         <module>acme-categories</module>
-        <module>acme-categories</module>
     </modules>
 
     <properties>
