@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM openjdk:11-jre-slim
 
 COPY target/app.jar /app/
 COPY src/main/docker/entrypoint.sh /
