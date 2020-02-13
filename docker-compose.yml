@@ -1,0 +1,22 @@
+version: '3.1'
+
+services:
+  product-inventory:
+    image: philba/acme-product-inventory:1.0-SNAPSHOT
+    ports:
+      - 23231:8080
+    restart: "no"
+    networks:
+      - net
+    depends_on:
+      - product-inventory-db
+  product-inventory-db:
+    image: postgres:12.1
+    restart: "no"
+    networks:
+      - net
+    environment:
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: productinventory
+networks:
+  net:
