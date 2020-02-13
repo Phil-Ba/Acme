@@ -4,4 +4,6 @@ import javax.persistence.Entity
 import javax.persistence.Id
 
 @Entity
-data class Product(@Id var name: String)
+data class Product(@Id var name: String) {
+    constructor() : this("")
+}
