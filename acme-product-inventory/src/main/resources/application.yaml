@@ -1,0 +1,8 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:postgresql://product-inventory-db:5432/productinventory
+    password: pass
+    username: postgres
