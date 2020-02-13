@@ -84,6 +84,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>io.kotlintest</groupId>
+            <artifactId>kotlintest-extensions-spring</artifactId>
+            <version>${kotlintest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>1.12.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-test</artifactId>
             <scope>test</scope>
