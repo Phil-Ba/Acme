@@ -1,0 +1,10 @@
+<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+    <weaver options=" -showWeaveInfo">
+        <!-- only weave classes in our application-specific packages -->
+        <include within="at.bayava..*"/>
+    </weaver>
+
+    <aspects/>
+
+</aspectj>
