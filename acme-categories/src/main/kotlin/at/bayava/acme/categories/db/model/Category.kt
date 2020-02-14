@@ -11,10 +11,8 @@ data class Category(
     var id: Long,
     @NotNull
     var name: String,
-    @NotNull
-    var low: Double,
-    @NotNull
-    var top: Double
+    var low: Double?,
+    var top: Double?
 ) {
     constructor() : this(-1, "", 0.0, 0.0)
 
