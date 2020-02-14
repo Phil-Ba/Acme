@@ -1,9 +1,11 @@
 package at.bayava.acme.categories.db.model
 
+import at.bayava.acme.categories.validation.ValidCategoryLimit
 import com.sun.istack.NotNull
 import javax.persistence.*
 
 @Entity
+@ValidCategoryLimit
 data class Category(
     @Id
     @SequenceGenerator(name = "CATEGORY_SEQ", sequenceName = "CATEGORY_SEQ")

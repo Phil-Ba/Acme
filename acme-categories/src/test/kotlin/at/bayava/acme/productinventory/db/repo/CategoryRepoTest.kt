@@ -8,6 +8,7 @@ import io.kotlintest.matchers.collections.shouldContainExactly
 import io.kotlintest.shouldNotBe
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
+import javax.validation.ConstraintViolationException
 
 @Transactional
 class CategoryRepoTest : SpringBaseSpec() {
@@ -29,6 +30,12 @@ class CategoryRepoTest : SpringBaseSpec() {
 
         result.shouldContainExactly(category)
         result[0].id shouldNotBe -1
+    }
+
+    @Test(ConstraintViolationException::class)
+    fun insertShouldFailWithInvalidLowTopRange() {
+        categoryRepo.save(Category(-1, "testcategory", 500.1, 0.2))
+        categoryRepo.flush()
     }
 
 }
