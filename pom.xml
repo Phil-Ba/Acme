@@ -19,6 +19,7 @@
     <modules>
         <module>acme-product-inventory</module>
         <module>acme-categories</module>
+        <module>acme-test-utils</module>
     </modules>
 
     <properties>

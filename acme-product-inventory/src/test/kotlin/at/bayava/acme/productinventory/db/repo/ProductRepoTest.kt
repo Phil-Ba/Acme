@@ -1,7 +1,7 @@
 package at.bayava.acme.productinventory.db.repo
 
-import SpringBaseSpec
 import at.bayava.acme.productinventory.db.model.Product
+import at.bayava.acme.test.SpringBaseSpec
 import io.kotlintest.matchers.collections.shouldBeEmpty
 import io.kotlintest.matchers.collections.shouldContainExactly
 import org.springframework.beans.factory.annotation.Autowired
