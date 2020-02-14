@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @Configuration
 @EntityScan(basePackages = ["at.bayava.acme.productinventory.db.model"])
-@EnableJpaRepositories(basePackages = ["at.bayava.acme.productinventory.db"])
+@EnableJpaRepositories(basePackages = ["at.bayava.acme.productinventory.db.repo"])
 class JpaConfig
