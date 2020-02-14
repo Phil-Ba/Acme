@@ -19,4 +19,14 @@
         </plugins>
     </build>
 
+    <dependencies>
+        <dependency>
+            <groupId>at.bayava.acme</groupId>
+            <artifactId>acme-test-utils</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
 </project>
