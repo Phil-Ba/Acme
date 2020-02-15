@@ -6,6 +6,11 @@ spring:
     url: jdbc:postgresql://product-inventory-db:5432/productinventory
     password: pass
     username: postgres
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
+product-inventory:
+  url: "http://product-inventory:8080"
 logging:
   level:
-     root: info
+    root: info

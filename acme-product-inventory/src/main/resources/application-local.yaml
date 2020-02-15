@@ -8,6 +8,8 @@ spring:
         format_sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/productinventory
+product-inventory:
+  url: "http://localhost:8080"
 logging:
   level:
     org.hibernate.SQL: DEBUG
