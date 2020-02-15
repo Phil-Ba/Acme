@@ -13,12 +13,12 @@ class CategoryLimitValidatorTest : ShouldSpec() {
         val doubleGen = Gen.positiveDoubles()
         val validCategoryGen: Gen<Category> = Gen.bind(doubleGen, doubleOrNullGen) { d, dOrNull ->
             if (dOrNull == null) {
-                return@bind Category(-1, "CatName", d, dOrNull)
+                return@bind Category(-1, "CatName", d, dOrNull,0.1)
             }
             when (d.compareTo(dOrNull)) {
-                1 -> Category(-1, "CatName", dOrNull, d)
-                0 -> Category(-1, "CatName", d, dOrNull - 0.01)
-                -1 -> Category(-1, "CatName", d, dOrNull)
+                1 -> Category(-1, "CatName", dOrNull, d,0.1)
+                0 -> Category(-1, "CatName", d, dOrNull - 0.01,0.2)
+                -1 -> Category(-1, "CatName", d, dOrNull,0.3)
                 else -> throw IllegalArgumentException()
             }
         }
@@ -35,9 +35,9 @@ class CategoryLimitValidatorTest : ShouldSpec() {
 
         val invalidCategoryGen: Gen<Category> = Gen.bind(doubleGen, doubleGen) { d1, d2 ->
             when (d1.compareTo(d2)) {
-                1 -> Category(-1, "CatName", d1, d2)
-                0 -> Category(-1, "CatName", d1, d2)
-                -1 -> Category(-1, "CatName", d2, d1)
+                1 -> Category(-1, "CatName", d1, d2,0.1)
+                0 -> Category(-1, "CatName", d1, d2,0.2)
+                -1 -> Category(-1, "CatName", d2, d1,0.3)
                 else -> throw IllegalArgumentException()
             }
         }

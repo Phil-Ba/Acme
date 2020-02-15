@@ -24,7 +24,7 @@ class CategoryRepoTest : SpringBaseSpec() {
 
     @Test
     fun afterInsertEntryShouldBeInDb() {
-        val category = categoryRepo.save(Category(-1, "testcategory", 0.1, 0.2))
+        val category = categoryRepo.save(Category(-1, "testcategory", 0.1, 0.2,0.3))
         categoryRepo.flush()
         val result = categoryRepo.findAll()
 
@@ -34,7 +34,7 @@ class CategoryRepoTest : SpringBaseSpec() {
 
     @Test(ConstraintViolationException::class)
     fun insertShouldFailWithInvalidLowTopRange() {
-        categoryRepo.save(Category(-1, "testcategory", 500.1, 0.2))
+        categoryRepo.save(Category(-1, "testcategory", 500.1, 0.2, 0.3))
         categoryRepo.flush()
     }
 
