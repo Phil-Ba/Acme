@@ -3,17 +3,17 @@ package at.bayava.acme.categories.event
 import at.bayava.acme.categories.db.model.Category
 import at.bayava.acme.categories.db.repo.CategoryRepo
 import mu.KotlinLogging
+import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.ApplicationListener
-import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
 import java.util.*
 
 private val logger = KotlinLogging.logger {}
 
 @Component
-class ApplicationStartListener(val categoryRepo: CategoryRepo) : ApplicationListener<ContextRefreshedEvent> {
+class ApplicationStartListener(val categoryRepo: CategoryRepo) : ApplicationListener<ApplicationReadyEvent> {
 
-    override fun onApplicationEvent(event: ContextRefreshedEvent) {
+    override fun onApplicationEvent(event: ApplicationReadyEvent) {
         val scanner = Scanner(this::class.java.getResourceAsStream("/categories.csv"))
             .useDelimiter(";|\\r?\\n|\\r")
         scanner.nextLine()
