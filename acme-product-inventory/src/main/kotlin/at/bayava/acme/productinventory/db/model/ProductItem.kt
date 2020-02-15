@@ -3,6 +3,7 @@ package at.bayava.acme.productinventory.db.model
 import com.sun.istack.NotNull
 import java.time.LocalDate
 import javax.persistence.*
+import javax.validation.Valid
 
 @Entity
 data class ProductItem(
@@ -10,6 +11,7 @@ data class ProductItem(
     @SequenceGenerator(name = "PRODCUT_SEQ", sequenceName = "PRODUCT_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUCT_SEQ")
     var id: Long,
+    @Valid
     @NotNull
     @ManyToOne(optional = false)
     var productType: ProductType,
