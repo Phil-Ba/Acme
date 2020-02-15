@@ -6,3 +6,6 @@ spring:
     url: jdbc:postgresql://product-inventory-db:5432/productinventory
     password: pass
     username: postgres
+logging:
+  level:
+     root: info

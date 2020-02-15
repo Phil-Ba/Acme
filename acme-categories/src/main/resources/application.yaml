@@ -6,3 +6,6 @@ spring:
     url: jdbc:postgresql://categories-db:5432/categories
     password: pass
     username: postgres
+logging:
+  level:
+    root: info
