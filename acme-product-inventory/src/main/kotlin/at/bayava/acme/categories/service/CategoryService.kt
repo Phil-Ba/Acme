@@ -1,4 +1,4 @@
-package at.bayava.acme.categories.event
+package at.bayava.acme.categories.service
 
 import at.bayava.acme.productinventory.client.model.Category
 import at.bayava.acme.productinventory.client.rest.CategoryClient
