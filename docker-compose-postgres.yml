@@ -11,5 +11,15 @@ services:
     environment:
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: productinventory
+  categories-db:
+    image: postgres:12.1
+    restart: "no"
+    ports:
+    - 5433:5432
+    networks:
+      - net
+    environment:
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: categories
 networks:
   net:
