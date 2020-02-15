@@ -1,6 +1,7 @@
 package at.bayava.acme.productinventory.db.repo
 
-import at.bayava.acme.productinventory.db.model.Product
+import at.bayava.acme.productinventory.db.model.ProductItem
+import at.bayava.acme.productinventory.db.model.ProductType
 import at.bayava.acme.test.SpringBaseSpec
 import io.kotlintest.matchers.collections.shouldBeEmpty
 import io.kotlintest.matchers.collections.shouldContainExactly
@@ -9,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Transactional
-class ProductRepoTest : SpringBaseSpec() {
+class ProductItemRepoTest : SpringBaseSpec() {
     @Autowired
     lateinit var productRepo: ProductRepo
 
@@ -22,7 +23,14 @@ class ProductRepoTest : SpringBaseSpec() {
 
     @Test
     fun afterInsertEntryShouldBeInDb() {
-        val product = productRepo.save(Product("testProduct", LocalDate.of(1990, 12, 1), 123.45))
+        val product = productRepo.save(
+            ProductItem(
+                -1,
+                ProductType(-1, "testProductType", emptyList()),
+                LocalDate.of(1990, 12, 1),
+                123.45
+            )
+        )
         productRepo.flush()
         val result = productRepo.findAll()
 
