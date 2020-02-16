@@ -6,11 +6,11 @@ import javax.persistence.*
 import javax.validation.Valid
 
 @Entity
-data class ProductItem(
+class ProductItem() {
     @Id
     @SequenceGenerator(name = "PRODCUT_SEQ", sequenceName = "PRODUCT_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUCT_SEQ")
-    var id: Long,
+    var id: Long = -1
     @Valid
     @NotNull
     @ManyToOne(optional = false, cascade = [CascadeType.ALL])
