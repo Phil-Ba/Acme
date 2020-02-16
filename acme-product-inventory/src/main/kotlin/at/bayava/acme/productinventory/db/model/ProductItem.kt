@@ -14,12 +14,21 @@ data class ProductItem(
     @Valid
     @NotNull
     @ManyToOne(optional = false, cascade = [CascadeType.ALL])
-    var productType: ProductType,
+    var productType: ProductType? = null
     @NotNull
-    var deliveryDate: LocalDate,
+    var deliveryDate: LocalDate = LocalDate.MIN
     @NotNull
-    var declaredValue: Double
-) {
-    constructor() : this(-1, ProductType(), LocalDate.MIN, 0.0)
+    var declaredValue: Double = 0.0
 
+    constructor(
+        id: Long,
+        productType: ProductType,
+        deliveryDate: LocalDate,
+        declaredValue: Double
+    ) : this() {
+        this.id = id
+        this.productType = productType
+        this.deliveryDate = deliveryDate
+        this.declaredValue = declaredValue
+    }
 }
