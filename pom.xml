@@ -20,6 +20,7 @@
         <module>acme-product-inventory</module>
         <module>acme-categories</module>
         <module>acme-test-utils</module>
+        <module>acme-ui</module>
     </modules>
 
     <properties>
