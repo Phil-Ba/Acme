@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="UiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="acme-ui" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="at.bayava.acme.ui.main.at.bayava.acme.ui.main.UiApplication" />
+    <option name="ACTIVE_PROFILES" value="local" />
+    <option name="VM_PARAMETERS" value="-javaagent:$ProjectFileDir$/acme-product-inventory/target/docker/aspectjweaver.jar" />
+    <option name="ALTERNATIVE_JRE_PATH" value="11" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
