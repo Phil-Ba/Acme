@@ -1,4 +1,14 @@
 product-inventory:
   url: "http://localhost:8081"
+categories:
+  url: "http://localhost:8080"
 server:
   port: 8083
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+logging:
+  level:
+    at.bayava.acme.ui.client.rest: DEBUG

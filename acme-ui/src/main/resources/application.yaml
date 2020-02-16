@@ -1,7 +1,13 @@
 product-inventory:
   url: "http://product-inventory:8080"
+categories:
+  url: "http://categories:8080"
 logging:
   level:
     root: info
 vaadin:
   compatibilityMode: false
+spring:
+  data:
+    rest:
+      base-path: api
