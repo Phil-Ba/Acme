@@ -3,3 +3,5 @@ product-inventory:
 logging:
   level:
     root: info
+vaadin:
+  compatibilityMode: false
