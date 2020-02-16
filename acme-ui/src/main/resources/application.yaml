@@ -1,0 +1,5 @@
+product-inventory:
+  url: "http://product-inventory:8080"
+logging:
+  level:
+    root: info
