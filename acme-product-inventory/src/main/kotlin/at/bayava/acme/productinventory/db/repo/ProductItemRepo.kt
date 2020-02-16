@@ -6,4 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
 @RepositoryRestResource(excerptProjection = InlineProductType::class)
-interface ProductItemRepo : JpaRepository<ProductItem, String>
+interface ProductItemRepo : JpaRepository<ProductItem, Long>

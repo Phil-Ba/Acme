@@ -24,8 +24,18 @@ class ProductItemController(
     fun insert(@RequestBody dto: ProductItemDto): ProductItem {
         val type = productTypeRepo.findById(dto.productTypeId)
             .orElseThrow { IllegalArgumentException("Unknown type[${dto.productTypeId}]") }
-
-        return productItemRepo.save(ProductItem(-1, type, dto.deliveryDate, dto.declaredValue))
+        if (dto.id == null) {
+            return productItemRepo.save(ProductItem(-1, type, dto.deliveryDate, dto.declaredValue))
+        } else {
+            val item = productItemRepo.findById(dto.id)
+                .orElseThrow { IllegalArgumentException("Unknown item[${dto.id}]") }
+            item.apply {
+                declaredValue = dto.declaredValue
+                deliveryDate = dto.deliveryDate
+                productType = type
+            }
+            return productItemRepo.save(item)
+        }
     }
 
 }
