@@ -13,7 +13,7 @@ data class ProductItem(
     var id: Long,
     @Valid
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = [CascadeType.ALL])
     var productType: ProductType,
     @NotNull
     var deliveryDate: LocalDate,
