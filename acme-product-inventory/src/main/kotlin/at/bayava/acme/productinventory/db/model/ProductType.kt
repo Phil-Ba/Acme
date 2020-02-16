@@ -9,7 +9,7 @@ import javax.persistence.*
 data class ProductType(
     @Id
     @SequenceGenerator(name = "PRODUCT_TYPE_SEQ", sequenceName = "PRODUCT_TYPE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROCUCT_TYPE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUCT_TYPE_SEQ")
     var id: Long,
     @Column(unique = true)
     var name: String,
