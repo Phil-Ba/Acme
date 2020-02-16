@@ -31,11 +31,11 @@ class ProductItemRepoTest : SpringBaseSpec() {
     }
 
     @Autowired
-    lateinit var productRepo: ProductRepo
+    lateinit var productItemRepo: ProductItemRepo
 
     @Test
     fun initialDbShouldBeEmpty() {
-        val result = productRepo.findAll()
+        val result = productItemRepo.findAll()
 
         result.shouldBeEmpty()
     }
@@ -50,10 +50,10 @@ class ProductItemRepoTest : SpringBaseSpec() {
             123.45
         )
 
-        val product = productRepo.save(productItem)
-        productRepo.flush()
+        val product = productItemRepo.save(productItem)
+        productItemRepo.flush()
 
-        val result = productRepo.findAll()
+        val result = productItemRepo.findAll()
 
         result.shouldContainExactly(product)
     }
