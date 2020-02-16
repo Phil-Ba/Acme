@@ -6,7 +6,7 @@ import org.springframework.hateoas.CollectionModel
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 
-@FeignClient("categoryService", url = "\${product-inventory.url}", path = "categories")
+@FeignClient("categoryService", url = "\${categories.url}", path = "categories")
 interface CategoryClient {
     @RequestMapping(
         method = [RequestMethod.GET],

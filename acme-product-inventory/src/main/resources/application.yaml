@@ -9,8 +9,8 @@ spring:
   cache:
     jcache:
       config: classpath:ehcache.xml
-product-inventory:
-  url: "http://product-inventory:8080"
+categories:
+  url: "http://categories:8080"
 logging:
   level:
     root: info
