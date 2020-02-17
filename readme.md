@@ -17,6 +17,7 @@ The build does following general tasks:
 - Create an executable Spring Boot jar.
 - Copy all needed files for the Docker build to the target/docker directory.
 - Build the docker image according to the Dockerfile.
+Additionally Travis was set up for CI.
 
 # Architecture
 All modules build an individual MS. Each modules is packaged into an executable Spring Boot executable jar and then
@@ -29,11 +30,15 @@ into a docker image.
 - Hibernate Validator: For validation bean constraints.
 - testcontainers: To provide a database running in a docker container for environment independent integration tests.
 - Kotlin: As language of choice for concise and null-safe code.
+Each applications contains it's own, independent model for REST communication.  
+Since categories are not expected to change much, _product-inventory_ maintains it's own cache of categories. This cache
+is also used when inserting product types, to validate they have a known/valid category. Due to time constraints this is
+a pretty simple solution with some downsides. _categories_ also contains some validation for validating the fee ranges.
 
 # Running
 The project provides two docker-compose files. `docker-compose-postgres` provides a setup which only creates the necessary
 databases for running local instances of the applications. In this case the applications should be started with the _local_
-profile.  `docker-compose` will start all the applications in docker and expose the _acme-ui_ application on port 23231.
+profile.  `docker-compose` will start all the applications in docker and expose the _acme-ui_ application on port `23231`.
 While the applications are independent of each other, due the startup initialization _acme-product-inventory_ depends on
 _acme-categories_.
 Intellij run configurations are also checked in. 
