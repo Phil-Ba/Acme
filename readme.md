@@ -4,6 +4,7 @@ The project consists of the following modules:
 - acme-categories: MS responsible to managing categories and their fees.
 - acme-product-inventory: MS responsible for managing the product inventory.
 - acme-ui: The web front end.
+- acme-test-utils: Commonly used test classes, mainly the test-setup of Spring.
 
 # Data Model
 The data model consists mainly of these 3 entities:
