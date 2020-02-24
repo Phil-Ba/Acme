@@ -1,14 +1,9 @@
-package at.bayava.acme.ui.components
+package at.bayava.acme.ui.view
 
-import at.bayava.acme.ui.client.rest.CategoryClient
-import at.bayava.acme.ui.client.rest.ProductItemClient
-import at.bayava.acme.ui.client.rest.ProductItemsClient
-import at.bayava.acme.ui.client.rest.ProductTypeClient
 import at.bayava.acme.ui.model.rest.Category
 import at.bayava.acme.ui.model.rest.ProductItem
-import at.bayava.acme.ui.model.rest.ProductItemPostDto
 import at.bayava.acme.ui.model.rest.ProductType
-import at.bayava.acme.ui.view.MainView
+import com.vaadin.flow.component.HasValue.ValueChangeEvent
 import com.vaadin.flow.component.ItemLabelGenerator
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
@@ -22,12 +17,10 @@ import com.vaadin.flow.data.binder.Binder
 
 
 class ProductItemForm(
-    val mainView: MainView,
-    val productItemsClient: ProductItemsClient,
-    val productItemClient: ProductItemClient,
-    val productTypeClient: ProductTypeClient,
-    val categoryClient: CategoryClient
-) : FormLayout() {
+    private val saveHandler: (ProductItem) -> ProductItem,
+    val categoriesByName: Map<String, List<Category>>,
+    val productTypes: List<ProductType>
+) : FormLayout(), ItemForm<ProductItem> {
     private val binder = Binder(ProductItem::class.java)
     var deliveryDate = DatePicker("Delivery date")
     var declaredValue = NumberField("Declared value")
@@ -35,19 +28,13 @@ class ProductItemForm(
     var feeAmount = NumberField("Total fee")
     val productType = ComboBox<ProductType>("Product type")
     val productCategory = TextField("Product category")
-    val save: Button = Button("Save")
-    val delete: Button = Button("Delete")
-    val categoriesByName: Map<String, List<Category>>
+    val save = Button("Save")
+    val delete = Button("Delete")
 
     init {
         binder.bindInstanceFields(this)
-        //        status.setItems(CustomerStatus.values())
         val buttons = HorizontalLayout(save, delete)
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY)
-
-        val productTypes = productTypeClient.fetchProductTypes(1000).content
-        categoriesByName = categoryClient.fetchCategories().content
-            .groupBy { it.name }
 
         productCategory.isReadOnly = true
         deliveryDate.isRequired = true
@@ -57,21 +44,25 @@ class ProductItemForm(
         feePercent.isReadOnly = true
         feeAmount.isReadOnly = true
 
-        declaredValue.addValueChangeListener { event ->
-            feeAmount.value = event.value?.let { it * (feePercent.value ?: 0.0) } ?: 0.0
-        }
+        declaredValue.addValueChangeListener(::updateFeeAmount)
 
-
-        productType.itemLabelGenerator = ItemLabelGenerator { it.name }
         productType.setItems(productTypes)
-        productType.addValueChangeListener { changeEvent ->
-            val value = changeEvent.value
-            updateFee(value)
-            binder.bean?.apply { productType = value }
-        }
+        productType.itemLabelGenerator = ItemLabelGenerator { it.name }
+        productType.addValueChangeListener(::updateFeeAndProductType)
+
         save.addClickListener { save() }
 
         add(productType, productCategory, declaredValue, deliveryDate, feePercent, feeAmount, buttons)
+    }
+
+    private fun updateFeeAndProductType(changeEvent: ValueChangeEvent<ProductType>) {
+        val value = changeEvent.value
+        updateFee(value)
+        binder.bean?.apply { productType = value }
+    }
+
+    private fun updateFeeAmount(event: ValueChangeEvent<Double>) {
+        feeAmount.value = event.value?.let { it * (feePercent.value ?: 0.0) } ?: 0.0
     }
 
     private fun updateFee(prodType: ProductType?) {
@@ -101,27 +92,17 @@ class ProductItemForm(
         return category.fee
     }
 
-    fun save() {
-        val item = binder.bean
-        val savedProductItem = productItemClient.saveProductItem(
-            ProductItemPostDto(
-                item.id,
-                item.productType!!.id,
-                item.deliveryDate,
-                item.declaredValue
-            )
-        )
-        setProductItem(null)
-        mainView.updateGrid(savedProductItem)
+    private fun save() {
+        saveHandler(binder.bean)
     }
 
-    fun setProductItem(productItem: ProductItem?) {
-        binder.bean = productItem
-        if (productItem == null) {
+    override fun setCurrentItem(item: ProductItem?) {
+        binder.bean = item
+        if (item == null) {
             isVisible = false
         } else {
             isVisible = true
-            updateFee(productItem.productType)
+            updateFee(item.productType)
             productType.focus()
         }
     }

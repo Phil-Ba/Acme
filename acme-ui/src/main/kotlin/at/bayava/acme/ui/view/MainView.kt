@@ -1,32 +1,19 @@
 package at.bayava.acme.ui.view
 
-import at.bayava.acme.ui.client.rest.CategoryClient
-import at.bayava.acme.ui.client.rest.ProductItemClient
-import at.bayava.acme.ui.client.rest.ProductItemsClient
-import at.bayava.acme.ui.client.rest.ProductTypeClient
-import at.bayava.acme.ui.components.ProductItemForm
 import at.bayava.acme.ui.model.rest.ProductItem
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
-import com.vaadin.flow.router.Route
 import java.time.LocalDate
 
 
-@Route("")
-class MainView(
-    val productItemsClient: ProductItemsClient,
-    val productItemClient: ProductItemClient,
-    val categoryClient: CategoryClient,
-    val productTypeClient: ProductTypeClient
-) : VerticalLayout() {
+class MainView(itemForm: ItemForm<Any>) : VerticalLayout() {
 
     private val grid = Grid(ProductItem::class.java)
-    private val form = ProductItemForm(this, productItemsClient, productItemClient, productTypeClient, categoryClient)
 
-    val items: MutableCollection<ProductItem>
+    val items: List<ProductItem>
 
     init {
         grid.setColumns(
@@ -34,18 +21,17 @@ class MainView(
             "deliveryDate",
             "declaredValue"
         )
-        items = productItemsClient.fetchProductItems(150).content.toMutableList()
         grid.setItems(items)
-        form.setProductItem(null)
+        itemForm.setCurrentItem(null)
 
         grid.asSingleSelect()
             .addValueChangeListener { event: ComponentValueChangeEvent<Grid<ProductItem?>?, ProductItem?>? ->
-                form.setProductItem(grid.asSingleSelect().value)
+                itemForm.setProductItem(grid.asSingleSelect().value)
             }
         val addProductItemBtn = Button("Add new product item")
         addProductItemBtn.addClickListener { e ->
             grid.asSingleSelect().clear()
-            form.setProductItem(ProductItem(null, null, LocalDate.now(), 0.0))
+            itemForm.setProductItem(ProductItem(null, null, LocalDate.now(), 0.0))
         }
         val mainContent = HorizontalLayout(grid, form)
         mainContent.setSizeFull()
