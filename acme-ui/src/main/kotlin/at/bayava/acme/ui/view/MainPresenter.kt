@@ -24,7 +24,7 @@ class MainPresenter(
 ) : VerticalLayout() {
 
     private val grid = Grid(ProductItem::class.java)
-    private val form = ProductItemForm(
+    private val form = ProductItemView(
         this,
         productItemsClient,
         productItemClient,
