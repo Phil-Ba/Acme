@@ -3,28 +3,35 @@ package at.bayava.acme.ui.view
 import at.bayava.acme.ui.model.rest.Category
 import at.bayava.acme.ui.model.rest.ProductItem
 import at.bayava.acme.ui.model.rest.ProductType
+import com.vaadin.flow.component.ClickEvent
 import com.vaadin.flow.component.HasValue.ValueChangeEvent
+import com.vaadin.flow.component.ItemLabelGenerator
+import com.vaadin.flow.component.button.Button
+import com.vaadin.flow.data.binder.Binder
 
 
 class ProductItemPresenter(
-    private val saveHandler: (ProductItem) -> ProductItem,
-    val categoriesByName: Map<String, List<Category>>,
-    val productTypes: List<ProductType>
+    private val view: ProductItemView,
+    private val categoriesByName: Map<String, List<Category>>,
+    private val productTypes: List<ProductType>
 ) {
-    private val view: ProductItemView
+    private val binder: Binder<ProductItem>
 
     init {
-        view = ProductItemView(categoriesByName, productTypes)
+        view.setProductTypeItems(productTypes)
+        view.setProductTypeItemsLabelGenerator(ItemLabelGenerator<ProductType> { it.name })
+        view.listenToDeclaredValueChange(::updateFeeAmount)
+        view.listenToProductTypeChange(::updateFeeAndProductType)
 
-        view.declaredValue.addValueChangeListener(::updateFeeAmount)
-        view.productType.addValueChangeListener(::updateFeeAndProductType)
-        view.save.addClickListener { save() }
+        binder = view.initBinder(ProductItem::class.java)
+
+        view.listenToSave(::save)
     }
 
     private fun updateFeeAndProductType(changeEvent: ValueChangeEvent<ProductType>) {
         val value = changeEvent.value
         updateFee(value)
-        view.getCurrentItem()?.apply { productType = value }
+        binder.bean?.apply { productType = value }
     }
 
     private fun updateFeeAmount(event: ValueChangeEvent<Double>) {
@@ -58,12 +65,12 @@ class ProductItemPresenter(
         return category.fee
     }
 
-    private fun save() {
-        view.getCurrentItem()?.let { saveHandler(it) }
+    private fun save(event: ClickEvent<Button>) {
+        binder.bean.let { TODO() }
     }
 
     fun setCurrentItem(item: ProductItem?) {
-        view.setCurrentItem(item)
+        binder.bean = item
         if (item == null) {
             view.isVisible = false
         } else {
