@@ -12,9 +12,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.textfield.NumberField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.binder.Binder
+import com.vaadin.flow.spring.annotation.UIScope
+import org.springframework.stereotype.Component
 
-
-class ProductItemView : FormLayout() {
+@UIScope
+@Component
+class ProductItemView(presenter: ProductItemPresenter) : FormLayout() {
     private lateinit var binder: Binder<*>
     private var deliveryDate = DatePicker("Delivery date")
     var declaredValue = NumberField("Declared value")
@@ -38,6 +41,7 @@ class ProductItemView : FormLayout() {
         feeAmount.isReadOnly = true
 
         add(productType, productCategory, declaredValue, deliveryDate, feePercent, feeAmount, buttons)
+        presenter.bindToView(this)
     }
 
     fun <T> setProductTypeItems(productTypes: List<T>) {

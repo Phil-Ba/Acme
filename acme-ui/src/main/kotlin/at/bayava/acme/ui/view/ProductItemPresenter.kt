@@ -1,5 +1,7 @@
 package at.bayava.acme.ui.view
 
+import at.bayava.acme.ui.client.rest.CategoryClient
+import at.bayava.acme.ui.client.rest.ProductTypeClient
 import at.bayava.acme.ui.model.rest.Category
 import at.bayava.acme.ui.model.rest.ProductItem
 import at.bayava.acme.ui.model.rest.ProductType
@@ -8,17 +10,26 @@ import com.vaadin.flow.component.HasValue.ValueChangeEvent
 import com.vaadin.flow.component.ItemLabelGenerator
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.data.binder.Binder
+import com.vaadin.flow.spring.annotation.UIScope
+import org.springframework.stereotype.Component
 
-
+@UIScope
+@Component
 class ProductItemPresenter(
-    private val view: ProductItemView,
-    private val categoriesByName: Map<String, List<Category>>,
-    private val productTypes: List<ProductType>
+    private val categoryClient: CategoryClient,
+    private val productTypeClient: ProductTypeClient
 ) {
-    private val binder: Binder<ProductItem>
+    private lateinit var binder: Binder<ProductItem>
+    private lateinit var view: ProductItemView
+    private lateinit var categoriesByName: Map<String, List<Category>>
 
-    init {
-        view.setProductTypeItems(productTypes)
+    fun bindToView(view: ProductItemView) {
+        val productTypes = productTypeClient.fetchProductTypes(1000).content
+        categoriesByName = categoryClient.fetchCategories()
+            .content
+            .groupBy { it.name }
+        this.view = view
+        view.setProductTypeItems(productTypes.toList())
         view.setProductTypeItemsLabelGenerator(ItemLabelGenerator<ProductType> { it.name })
         view.listenToDeclaredValueChange(::updateFeeAmount)
         view.listenToProductTypeChange(::updateFeeAndProductType)
