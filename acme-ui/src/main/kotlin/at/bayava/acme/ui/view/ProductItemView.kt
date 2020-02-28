@@ -64,9 +64,12 @@ class ProductItemView(presenter: ProductItemPresenter) : FormLayout() {
         save.addClickListener(listener)
     }
 
-    fun <T> initBinder(itemClass: Class<T>): Binder<T> {
+    fun <T, TY> initBinder(itemClass: Class<T>, Function<in Any, TY>, typeSetter: (Any, TY) -> Unit): Binder<T> {
+//    fun <T,TY> initBinder(itemClass: Class<T>, typeGetter: (Any) -> TY, typeSetter: (Any, TY) -> Unit): Binder<T> {
         val newBinder = Binder(itemClass)
         binder = newBinder
+        binder.forField(productType as ComboBox<TY>)
+            .bind(typeGetter, typeSetter)
         binder.bindInstanceFields(this)
         return newBinder
     }
