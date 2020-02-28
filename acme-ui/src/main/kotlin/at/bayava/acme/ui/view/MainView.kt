@@ -5,7 +5,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.Route
 
-@Route("/")
+@Route("")
 class MainView(
     private val itemList: ProductItemListView,
     private val itemView: ProductItemView
@@ -14,5 +14,6 @@ class MainView(
     init {
         val addProductItemBtn = Button("Add new product item")
         this.add(addProductItemBtn, HorizontalLayout(itemList, itemView))
+        this.setSizeFull()
     }
 }

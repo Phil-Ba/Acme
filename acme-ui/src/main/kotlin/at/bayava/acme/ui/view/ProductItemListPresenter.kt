@@ -5,35 +5,45 @@ import at.bayava.acme.ui.client.rest.ProductItemClient
 import at.bayava.acme.ui.client.rest.ProductItemsClient
 import at.bayava.acme.ui.client.rest.ProductTypeClient
 import at.bayava.acme.ui.model.rest.ProductItem
-import com.vaadin.flow.component.orderedlayout.VerticalLayout
-import com.vaadin.flow.router.Route
+import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent
+import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.spring.annotation.UIScope
+import org.springframework.stereotype.Component
+import java.time.LocalDate
 
 
-@Route("")
+@UIScope
+@Component
 class ProductItemListPresenter(
     val productItemsClient: ProductItemsClient,
     val productItemClient: ProductItemClient,
     val categoryClient: CategoryClient,
-    val productTypeClient: ProductTypeClient
-) : VerticalLayout() {
+    val productTypeClient: ProductTypeClient,
+    val productItemPresenter: ProductItemPresenter
+) {
+    private lateinit var view: ProductItemListView
+    private lateinit var items: MutableList<ProductItem>
+    private lateinit var grid: Grid<ProductItem>
 
-    val view = ProductItemListView()
-    val items: MutableList<ProductItem>
-
-    init {
+    fun bindToView(view: ProductItemListView) {
+        this.view = view
         items = productItemsClient.fetchProductItems(150).content.toMutableList()
-        view.grid.setItems(items)
-//        view.grid.asSingleSelect()
-//            .addValueChangeListener { event: ComponentValueChangeEvent<Grid<ProductItem?>?, ProductItem?>? ->
-//                form.setProductItem(grid.asSingleSelect().value)
-//            }
-//        addProductItemBtn.addClickListener { e ->
-//            grid.asSingleSelect().clear()
-//            form.setProductItem(ProductItem(null, null, LocalDate.now(), 0.0))
-//        }
-//        val mainContent = HorizontalLayout(grid, form)
-//        mainContent.setSizeFull()
-//        add(addProductItemBtn, mainContent)
+        grid = view.initGrid(
+            ProductItem::class.java, items,
+            "productType.name",
+            "deliveryDate",
+            "declaredValue"
+        )
+
+        grid.asSingleSelect()
+            .addValueChangeListener { event: ComponentValueChangeEvent<Grid<ProductItem?>?, ProductItem?>? ->
+                productItemPresenter.setCurrentItem(grid.asSingleSelect().value)
+            }
+
+        view.listenToAddItemClick { e ->
+            grid.asSingleSelect().clear()
+            productItemPresenter.setCurrentItem(ProductItem(null, null, LocalDate.now(), 0.0))
+        }
     }
 
 //    fun save() {
@@ -55,6 +65,6 @@ class ProductItemListPresenter(
             items.remove(productItem)
         }
         items.add(productItem)
-        view.grid.dataProvider.refreshAll()
+        grid.dataProvider.refreshAll()
     }
 }
