@@ -1,6 +1,5 @@
 package at.bayava.acme.ui.view
 
-import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.Route
@@ -12,8 +11,7 @@ class MainView(
 ) : VerticalLayout() {
 
     init {
-        val addProductItemBtn = Button("Add new product item")
-        this.add(addProductItemBtn, HorizontalLayout(itemList, itemView))
+        this.add(HorizontalLayout(itemList, itemView))
         this.setSizeFull()
     }
 }
