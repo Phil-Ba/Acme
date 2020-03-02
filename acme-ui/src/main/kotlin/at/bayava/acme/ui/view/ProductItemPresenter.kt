@@ -35,8 +35,8 @@ class ProductItemPresenter(
         view.listenToProductTypeChange(::updateFeeAndProductType)
 
         binder = view.initBinder(ProductItem::class.java, ProductItem::productType::get, ProductItem::productType::set)
-
         view.listenToSave(::save)
+        setCurrentItem(null)
     }
 
     private fun updateFeeAndProductType(changeEvent: ValueChangeEvent<ProductType>) {
