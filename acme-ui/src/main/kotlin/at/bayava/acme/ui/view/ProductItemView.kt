@@ -1,6 +1,9 @@
 package at.bayava.acme.ui.view
 
+import at.bayava.acme.ui.event.ItemSavedEvent
+import at.bayava.acme.ui.model.rest.ProductItem
 import com.vaadin.flow.component.ClickEvent
+import com.vaadin.flow.component.ComponentEvent
 import com.vaadin.flow.component.HasValue.ValueChangeEvent
 import com.vaadin.flow.component.ItemLabelGenerator
 import com.vaadin.flow.component.button.Button
@@ -42,6 +45,17 @@ class ProductItemView(presenter: ProductItemPresenter) : FormLayout() {
 
         add(productType, productCategory, declaredValue, deliveryDate, feePercent, feeAmount, buttons)
         presenter.bindToView(this)
+    }
+
+    //    fun <T,C:com.vaadin.flow.component.Component> addListener(event: Class<T>, listener:ComponentEventListener<ComponentEvent<C>>) {
+//        super.addListener(event, listener)
+    fun <T : ComponentEvent<*>> addListener(event: Class<T>, listener: (T) -> Unit) {
+        super.addListener(event, listener)
+    }
+
+    fun fireItemSaved(item: ProductItem) {
+        println("Fire event[$item]")
+        fireEvent(ItemSavedEvent(this, item))
     }
 
     fun <T> setProductTypeItems(productTypes: List<T>) {

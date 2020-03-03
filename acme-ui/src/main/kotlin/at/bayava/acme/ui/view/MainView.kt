@@ -12,6 +12,8 @@ class MainView(
 
     init {
         this.add(HorizontalLayout(itemList, itemView))
+        itemList.eventBus = eventBus
+        itemView.eventBus = eventBus
         this.setSizeFull()
     }
 }

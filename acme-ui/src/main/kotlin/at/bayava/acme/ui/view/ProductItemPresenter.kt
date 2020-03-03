@@ -1,9 +1,12 @@
 package at.bayava.acme.ui.view
 
 import at.bayava.acme.ui.client.rest.CategoryClient
+import at.bayava.acme.ui.client.rest.ProductItemClient
 import at.bayava.acme.ui.client.rest.ProductTypeClient
+import at.bayava.acme.ui.event.ItemSelectedEvent
 import at.bayava.acme.ui.model.rest.Category
 import at.bayava.acme.ui.model.rest.ProductItem
+import at.bayava.acme.ui.model.rest.ProductItemPostDto
 import at.bayava.acme.ui.model.rest.ProductType
 import com.vaadin.flow.component.ClickEvent
 import com.vaadin.flow.component.HasValue.ValueChangeEvent
@@ -17,7 +20,8 @@ import org.springframework.stereotype.Component
 @Component
 class ProductItemPresenter(
     private val categoryClient: CategoryClient,
-    private val productTypeClient: ProductTypeClient
+    private val productTypeClient: ProductTypeClient,
+    private val productItemClient: ProductItemClient
 ) {
     private lateinit var binder: Binder<ProductItem>
     private lateinit var view: ProductItemView
@@ -36,6 +40,10 @@ class ProductItemPresenter(
 
         binder = view.initBinder(ProductItem::class.java, ProductItem::productType::get, ProductItem::productType::set)
         view.listenToSave(::save)
+        view.addListener(ItemSelectedEvent::class.java) { event: ItemSelectedEvent ->
+            println("Reveived event[$event]")
+            setCurrentItem(event.productItem)
+        }
         setCurrentItem(null)
     }
 
@@ -77,10 +85,21 @@ class ProductItemPresenter(
     }
 
     private fun save(event: ClickEvent<Button>) {
-        binder.bean.let { TODO() }
+        binder.bean.let { item ->
+            val savedProductItem = productItemClient.saveProductItem(
+                ProductItemPostDto(
+                    item.id,
+                    item.productType!!.id,
+                    item.deliveryDate,
+                    item.declaredValue
+                )
+            )
+            setCurrentItem(null)
+
+        }
     }
 
-    fun setCurrentItem(item: ProductItem?) {
+    private fun setCurrentItem(item: ProductItem?) {
         binder.bean = item
         if (item == null) {
             view.isVisible = false
